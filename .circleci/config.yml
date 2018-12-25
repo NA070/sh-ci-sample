@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  component-testing:
+    docker:
+      - image: bats/bats:latest
+    steps:
+      - checkout
+      - run: bats ./test/
+  lint:
+    docker:
+      - image: koalaman/shellcheck-alpine
+        entrypoint: ''
+    steps:
+      - checkout
+      - run: shellcheck ./lib/*
+
+workflows:
+  version: 2
+  component-test-and-lint:
+    jobs:
+      - component-testing
+      - lint
